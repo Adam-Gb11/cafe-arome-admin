@@ -1,0 +1,107 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!loading()">
+
+  <div class="page-hdr">
+    <h2 class="page-title">Gestion du menu</h2>
+    <span class="item-count">{{ items().length }} articles</span>
+  </div>
+
+  <!-- Groupes par catégorie -->
+  <div *ngFor="let group of groupedItems" class="group">
+
+    <div class="group-hdr">
+      <h3 class="group-title">{{ group.label }}</h3>
+      <div class="group-line"></div>
+    </div>
+
+    <div class="cards">
+      <div *ngFor="let item of group.items"
+           class="mcard"
+           [class.unavailable]="!item.available">
+
+        <!-- Emoji + infos -->
+        <div class="mc-top">
+          <span class="mc-em">{{ item.emoji }}</span>
+          <div class="mc-info">
+            <div class="mc-name">
+              {{ item.name }}
+              <span *ngIf="item.badge"
+                    class="badge"
+                    [class]="'b-' + item.badge">
+                {{ badgeLabels[item.badge] }}
+              </span>
+            </div>
+            <div class="mc-desc">{{ item.description }}</div>
+          </div>
+          <div class="mc-price">{{ item.price.toFixed(2) }} TND</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mc-actions">
+          <button class="toggle-btn"
+                  [class.on]="item.available"
+                  (click)="toggleAvailable(item)">
+            {{ item.available ? '✅ Disponible' : '⛔ Indisponible' }}
+          </button>
+          <button class="edit-btn" (click)="openEdit(item)">
+            ✏️ Modifier
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal édition -->
+<div *ngIf="editingItem()" class="overlay" (click)="closeEdit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-hdr">
+      <h3 class="modal-title">
+        {{ editingItem()!.emoji }} Modifier l'article
+      </h3>
+      <button class="close-btn" (click)="closeEdit()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <label class="lbl">Nom</label>
+      <input class="inp" [(ngModel)]="editName" type="text">
+
+      <label class="lbl">Description</label>
+      <textarea class="inp textarea" [(ngModel)]="editDescription" rows="2"></textarea>
+
+      <label class="lbl">Prix (TND)</label>
+      <input class="inp" [(ngModel)]="editPrice" type="number" step="0.1" min="0">
+
+      <div class="avail-row">
+        <label class="lbl" style="margin:0">Disponible</label>
+        <button class="avail-toggle"
+                [class.on]="editAvailable"
+                (click)="editAvailable = !editAvailable">
+          {{ editAvailable ? '✅ Oui' : '⛔ Non' }}
+        </button>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeEdit()">Annuler</button>
+      <button class="save-btn"
+              [disabled]="saving()"
+              (click)="saveEdit()">
+        {{ saving() ? 'Sauvegarde...' : '💾 Sauvegarder' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div *ngIf="notification()" class="toast">{{ notification() }}</div>

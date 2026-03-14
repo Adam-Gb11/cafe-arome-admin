@@ -1,0 +1,74 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!loading()">
+
+  <!-- KPI Cards -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-lbl">Commandes aujourd'hui</div>
+      <div class="kpi-val">{{ todayOrders.length }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lbl">Revenu du jour</div>
+      <div class="kpi-val gold">{{ revenue.toFixed(2) }}<span class="unit"> TND</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lbl">Ticket moyen</div>
+      <div class="kpi-val">{{ avgTicket.toFixed(2) }}<span class="unit"> TND</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lbl">Total commandes</div>
+      <div class="kpi-val">{{ orders().length }}</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- Top articles -->
+    <div class="panel">
+      <h3 class="panel-title">🏆 Articles les plus commandés</h3>
+      <div *ngIf="topItems.length === 0" class="no-data">Aucune donnée</div>
+      <ul class="top-list">
+        <li *ngFor="let item of topItems; let i = index" class="top-row">
+          <span class="rank">{{ i + 1 }}</span>
+          <span class="t-em">{{ item.emoji }}</span>
+          <div class="t-info">
+            <div class="t-name">{{ item.name }}</div>
+            <div class="bar-wrap">
+              <div class="bar"
+                   [style.width.%]="(item.qty / maxQty) * 100">
+              </div>
+            </div>
+          </div>
+          <span class="t-qty">{{ item.qty }}×</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Statuts -->
+    <div class="panel">
+      <h3 class="panel-title">📊 Répartition des statuts</h3>
+      <div *ngIf="orders().length === 0" class="no-data">Aucune donnée</div>
+      <ul class="status-list">
+        <li *ngFor="let s of statusBreakdown" class="status-row">
+          <div class="s-info">
+            <span class="s-dot" [style.background]="s.color"></span>
+            <span class="s-lbl">{{ s.label }}</span>
+          </div>
+          <div class="s-bar-wrap">
+            <div class="s-bar"
+                 [style.width.%]="orders().length ? (s.value / orders().length) * 100 : 0"
+                 [style.background]="s.color">
+            </div>
+          </div>
+          <span class="s-val">{{ s.value }}</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

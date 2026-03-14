@@ -1,0 +1,48 @@
+
+<div class="layout">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <span class="logo">☕ CAFÉ ARÔME</span>
+    <div class="topbar-r">
+      <div class="live">
+        <span class="dot"></span>
+        En direct
+      </div>
+      <span class="user">{{ auth.currentUser()?.name }}</span>
+      <button class="logout" (click)="auth.logout()">
+        Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="tabs">
+    <a class="tab"
+       routerLink="/admin/orders"
+       routerLinkActive="active">
+      📋 Commandes
+    </a>
+    <a class="tab"
+       routerLink="/admin/stats"
+       routerLinkActive="active">
+      📊 Statistiques
+    </a>
+    <a class="tab"
+   routerLink="/admin/menu"
+   routerLinkActive="active">
+  🍽️ Menu
+</a>
+<a class="tab"
+   routerLink="/admin/qr-codes"
+   routerLinkActive="active">
+  📱 QR Codes
+</a>
+  </nav>
+
+  <!-- Contenu -->
+  <main class="content">
+    <router-outlet />
+  </main>
+
+</div>

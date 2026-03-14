@@ -1,0 +1,134 @@
+:host {
+  --bg:      #0a0c12;
+  --bg2:     #0f1219;
+  --card:    #141820;
+  --edge:    #20263a;
+  --muted:   #4e5a7a;
+  --text:    #9aa5c0;
+  --bright:  #dce4f5;
+  --gold:    #c8a96e;
+  --gold-hi: #e4c98a;
+  --green:   #3dd68c;
+
+  display: block;
+}
+
+/* ── Layout ── */
+.layout {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Jost', sans-serif;
+  color: var(--text);
+}
+
+/* ── Topbar ── */
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--edge);
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.logo {
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+.topbar-r {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Live indicator ── */
+.live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+
+/* ── User ── */
+.user {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* ── Logout ── */
+.logout {
+  background: none;
+  border: 1px solid var(--edge);
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.logout:hover {
+  border-color: #f0476f;
+  color: #f0476f;
+}
+
+/* ── Tabs ── */
+.tabs {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--edge);
+  padding: 0 24px;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 14px 18px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* ── Content ── */
+.content {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}

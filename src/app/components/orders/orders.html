@@ -1,0 +1,103 @@
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat">
+    <div class="stat-lbl">Commandes</div>
+    <div class="stat-val">{{ stats.total }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-lbl">Nouvelles</div>
+    <div class="stat-val red">{{ stats.pending }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-lbl">Revenu</div>
+    <div class="stat-val">{{ stats.revenue.toFixed(2) }}<span class="unit"> TND</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-lbl">Livrées</div>
+    <div class="stat-val green">{{ stats.done }}</div>
+  </div>
+</div>
+
+<!-- Filtres -->
+<div class="sec-hdr">
+  <h2 class="sec-title">Commandes</h2>
+  <div class="filters">
+    <button *ngFor="let f of filters"
+            class="flt"
+            [class.active]="filter() === f.id"
+            (click)="setFilter(f.id)">
+      {{ f.label }}
+    </button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<!-- Grille commandes -->
+<div *ngIf="!loading()" class="grid">
+
+  <div *ngIf="filteredOrders.length === 0" class="empty">
+    <div class="empty-ico">☕</div>
+    <div>Aucune commande</div>
+  </div>
+
+  <div *ngFor="let order of filteredOrders"
+       class="ocard"
+       [class]="'ocard s-' + order.status">
+
+    <!-- Header carte -->
+    <div class="oh">
+      <div>
+        <div class="o-id">{{ order.orderNumber }}</div>
+        <div class="o-tbl">📍 Table {{ order.tableNumber }}</div>
+      </div>
+      <div class="oh-r">
+        <div class="o-time">{{ order.createdAt | date:'HH:mm' }}</div>
+        <span class="badge" [class]="'b-' + order.status">
+          {{ statusMeta[order.status].icon }}
+          {{ statusMeta[order.status].label }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <ul class="o-items">
+      <li *ngFor="let item of order.items" class="o-item">
+        <span class="oi-l">{{ item.emoji }} {{ item.name }}</span>
+        <span class="oi-q">×{{ item.quantity }}</span>
+        <span class="oi-p">{{ item.subtotal.toFixed(2) }} TND</span>
+      </li>
+    </ul>
+
+    <!-- Note -->
+    <div *ngIf="order.note" class="o-note">📝 {{ order.note }}</div>
+
+    <!-- Footer -->
+    <div class="of">
+      <div class="o-tot">{{ order.total.toFixed(2) }} TND</div>
+      <div class="a-btns">
+        <button *ngIf="nextStatus(order)"
+                class="a-btn"
+                [class]="'next-' + order.status"
+                (click)="updateStatus(order, nextStatus(order)!)">
+          {{ nextLabel(order) }}
+        </button>
+        <button *ngIf="order.status === 'pending'"
+                class="a-btn cancel"
+                (click)="updateStatus(order, 'cancelled')">
+          ✕
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div *ngIf="notification()" class="toast">
+  {{ notification() }}
+</div>

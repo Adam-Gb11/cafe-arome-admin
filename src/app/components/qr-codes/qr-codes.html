@@ -1,0 +1,31 @@
+<div class="page-hdr">
+  <h2 class="page-title">QR Codes — 20 Tables</h2>
+  <p class="page-sub">Imprime chaque QR code et place-le sur la table correspondante</p>
+</div>
+
+<div class="grid">
+  <div *ngFor="let t of tables()" class="qcard">
+
+    <!-- Numéro de table -->
+    <div class="table-num">TABLE {{ t.number }}</div>
+
+    <!-- QR Code -->
+    <div class="qr-wrap">
+      <img [src]="t.qr" [alt]="'QR Table ' + t.number" class="qr-img">
+    </div>
+
+    <!-- URL -->
+    <div class="url">{{ t.url }}</div>
+
+    <!-- Bouton copier -->
+    <button class="copy-btn" (click)="copy(t.url, t.number)">
+      📋 Copier le lien
+    </button>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div *ngIf="copied()" class="toast">
+  ✅ Lien {{ copied() }} copié !
+</div>

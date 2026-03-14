@@ -1,0 +1,103 @@
+:host {
+  --ink:     #0a0c12;
+  --card:    #141820;
+  --edge:    #20263a;
+  --muted:   #4e5a7a;
+  --text:    #9aa5c0;
+  --bright:  #dce4f5;
+  --gold:    #c8a96e;
+  --gold-hi: #e4c98a;
+
+  display: block;
+}
+
+/* ── Page ── */
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--ink);
+  padding: 20px;
+}
+
+/* ── Box ── */
+.box {
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  padding: 44px 36px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+/* ── Logo ── */
+.logo {
+  font-size: 24px;
+  color: var(--gold-hi);
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.sub {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+/* ── Input ── */
+.inp {
+  width: 100%;
+  background: #0f1219;
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  color: var(--bright);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 13px 16px;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+
+.inp:focus { border-color: #6e5530; }
+.inp::placeholder { color: var(--muted); }
+
+/* ── Erreur ── */
+.error {
+  color: #f0476f;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* ── Bouton ── */
+.btn {
+  width: 100%;
+  background: var(--gold);
+  color: #0a0c12;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 6px;
+}
+
+.btn:hover:not(:disabled) { background: var(--gold-hi); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Hint ── */
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 20px;
+}

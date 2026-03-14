@@ -1,0 +1,39 @@
+<div class="login">
+  <div class="box">
+
+    <!-- Logo -->
+    <div class="logo">CAFÉ ARÔME</div>
+    <div class="sub">IL PATRON</div>
+
+    <!-- Email -->
+    <input
+      class="inp"
+      type="email"
+      [(ngModel)]="email"
+      placeholder="Email"
+      (keyup.enter)="login()">
+
+    <!-- Mot de passe -->
+    <input
+      class="inp"
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Mot de passe"
+      (keyup.enter)="login()">
+
+    <!-- Erreur -->
+    <div *ngIf="error()" class="error">{{ error() }}</div>
+
+    <!-- Bouton -->
+    <button
+      class="btn"
+      [disabled]="loading()"
+      (click)="login()">
+      {{ loading() ? 'Connexion...' : 'Connexion' }}
+    </button>
+
+    <!-- Hint -->
+    <div class="hint">admin&#64;cafe-arome.tn · Admin1234!</div>
+
+  </div>
+</div>

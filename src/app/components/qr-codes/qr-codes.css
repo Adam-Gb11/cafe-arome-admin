@@ -1,0 +1,135 @@
+:host {
+  --bg:      #0a0c12;
+  --card:    #141820;
+  --edge:    #20263a;
+  --muted:   #4e5a7a;
+  --text:    #9aa5c0;
+  --bright:  #dce4f5;
+  --gold:    #c8a96e;
+  --gold-hi: #e4c98a;
+  --gold-lo: #8c6e3f;
+
+  display: block;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  color: var(--text);
+}
+
+/* ── Page header ── */
+.page-hdr {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--bright);
+  margin-bottom: 6px;
+}
+
+.page-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* ── QR Card ── */
+.qcard {
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+
+.qcard:hover {
+  border-color: var(--gold-lo);
+}
+
+/* ── Table number ── */
+.table-num {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── QR image ── */
+.qr-wrap {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-img {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+/* ── URL ── */
+.url {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+/* ── Bouton copier ── */
+.copy-btn {
+  width: 100%;
+  background: rgba(200,169,110,.08);
+  border: 1px solid var(--gold-lo);
+  color: var(--gold);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.copy-btn:hover {
+  background: rgba(200,169,110,.16);
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  background: var(--card);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--bright);
+  z-index: 900;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  animation: notifIn 0.3s ease;
+}
+
+@keyframes notifIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
