@@ -22,15 +22,20 @@
 <!-- Filtres -->
 <div class="sec-hdr">
   <h2 class="sec-title">Commandes</h2>
-  <div class="filters">
-    <button *ngFor="let f of filters"
-            class="flt"
-            [class.active]="filter() === f.id"
-            (click)="setFilter(f.id)">
-      {{ f.label }}
-    </button>
+  <div class="sec-hdr-right">
+    <button class="pdf-btn" (click)="exportPDF()">🖨️ Export PDF</button>
+    <div class="filters">
+      <button *ngFor="let f of filters"
+              class="flt"
+              [class.active]="filter() === f.id"
+              (click)="setFilter(f.id)">
+        {{ f.label }}
+      </button>
+    </div>
   </div>
 </div>
+
+<!-- Loading -->
 
 <!-- Loading -->
 <div *ngIf="loading()" class="loading">

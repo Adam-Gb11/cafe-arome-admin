@@ -239,6 +239,29 @@
   box-shadow: 0 8px 32px rgba(0,0,0,.5);
   animation: notifIn 0.3s ease;
 }
+/* ── PDF button ── */
+.sec-hdr-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pdf-btn {
+  background: rgba(200,169,110,.08);
+  border: 1px solid var(--gold-lo, #8c6e3f);
+  color: var(--gold, #c8a96e);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: inherit;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pdf-btn:hover {
+  background: rgba(200,169,110,.16);
+}
 
 @keyframes notifIn {
   from { opacity: 0; transform: translateX(10px); }
