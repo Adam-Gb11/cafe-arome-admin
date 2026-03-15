@@ -1,0 +1,61 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!loading()">
+
+  <!-- Stats globales -->
+  <div class="page-hdr">
+    <h2 class="page-title">Avis clients</h2>
+    <span class="item-count">{{ reviews().length }} avis</span>
+  </div>
+
+  <div *ngIf="stats()" class="stats-panel">
+
+    <!-- Note moyenne -->
+    <div class="avg-box">
+      <div class="avg-val">{{ stats().avg.toFixed(1) }}</div>
+      <div class="avg-stars">{{ renderStars(Math.round(stats().avg)) }}</div>
+      <div class="avg-lbl">{{ stats().total }} avis</div>
+    </div>
+
+    <!-- Distribution -->
+    <div class="dist-box">
+      <div *ngFor="let n of [5,4,3,2,1]" class="dist-row">
+        <span class="dist-lbl">{{ n }}★</span>
+        <div class="dist-bar-wrap">
+          <div class="dist-bar" [style.width.%]="getStarPercent(n)"></div>
+        </div>
+        <span class="dist-count">{{ getStarCount(n) }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Liste avis -->
+  <div *ngIf="reviews().length === 0" class="no-data">
+    Aucun avis pour le moment
+  </div>
+
+  <div class="reviews-grid">
+    <div *ngFor="let r of reviews()" class="rcard">
+
+      <div class="rc-top">
+        <div class="rc-left">
+          <div class="rc-stars">{{ renderStars(r.rating) }}</div>
+          <div class="rc-meta">Table {{ r.tableNumber }} · {{ r.orderNumber }}</div>
+        </div>
+        <div class="rc-date">
+          {{ r.createdAt | date:'dd/MM HH:mm' }}
+        </div>
+      </div>
+
+      <div *ngIf="r.comment" class="rc-comment">
+        "{{ r.comment }}"
+      </div>
+
+    </div>
+  </div>
+
+</div>

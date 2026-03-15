@@ -33,12 +33,18 @@ export const routes: Routes = [
           import('./components/menu-admin/menu-admin')
             .then(m => m.MenuAdminComponent),
       },
-      {
-        path: 'qr-codes',
-        loadComponent: () =>
-          import('./components/qr-codes/qr-codes')
-            .then(m => m.QrCodesComponent),
-      },
+     {
+  path: 'qr-codes',
+  loadComponent: () =>
+    import('./components/qr-codes/qr-codes')
+      .then(m => m.QrCodesComponent),
+},
+{
+  path: 'reviews',
+  loadComponent: () =>
+    import('./components/reviews/reviews')
+      .then(m => m.ReviewsComponent),
+},
       {
         path: '',
         redirectTo: 'orders',

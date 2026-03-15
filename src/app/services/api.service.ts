@@ -58,4 +58,16 @@ deleteMenuItem(id: string): Observable<any> {
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, { email, password });
   }
+  // ── Reviews ──
+getReviews(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/reviews`, {
+    headers: this.headers()
+  });
+}
+
+getReviewStats(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/reviews/stats`, {
+    headers: this.headers()
+  });
+}
 }
