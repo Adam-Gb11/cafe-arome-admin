@@ -14,17 +14,28 @@ import { MenuItem } from '../../models/models';
 export class MenuAdminComponent implements OnInit {
   private api = inject(ApiService);
 
-  items         = signal<MenuItem[]>([]);
-  loading       = signal(true);
-  editingItem   = signal<MenuItem | null>(null);
-  saving        = signal(false);
-  notification  = signal('');
+  items        = signal<MenuItem[]>([]);
+  loading      = signal(true);
+  editingItem  = signal<MenuItem | null>(null);
+  showAddForm  = signal(false);
+  saving       = signal(false);
+  deleting     = signal('');
+  notification = signal('');
 
-  // formulaire d'édition
+  // formulaire édition
   editName        = '';
   editDescription = '';
   editPrice       = 0;
   editAvailable   = true;
+
+  // formulaire ajout
+  newName        = '';
+  newDescription = '';
+  newPrice       = 0;
+  newEmoji       = '☕';
+  newCategory    = 'cafe';
+  newAvailable   = true;
+  newBadge       = '';
 
   readonly categories: Record<string, string> = {
     cafe:       '☕ Cafés',
@@ -57,6 +68,42 @@ export class MenuAdminComponent implements OnInit {
     });
   }
 
+  // ── Ajout ──
+  openAdd() { this.showAddForm.set(true); }
+  closeAdd() {
+    this.showAddForm.set(false);
+    this.newName = ''; this.newDescription = '';
+    this.newPrice = 0; this.newEmoji = '☕';
+    this.newCategory = 'cafe'; this.newBadge = '';
+  }
+
+  saveAdd() {
+    if (!this.newName || this.newPrice <= 0) return;
+    this.saving.set(true);
+    const data = {
+      name: this.newName,
+      description: this.newDescription,
+      price: this.newPrice,
+      emoji: this.newEmoji,
+      category: this.newCategory,
+      available: this.newAvailable,
+      badge: this.newBadge || undefined,
+    };
+    this.api.createMenuItem(data).subscribe({
+      next: created => {
+        this.items.update(list => [...list, created]);
+        this.saving.set(false);
+        this.closeAdd();
+        this.showNotif(`✅ ${created.name} ajouté !`);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.showNotif('❌ Erreur lors de l\'ajout');
+      }
+    });
+  }
+
+  // ── Édition ──
   openEdit(item: MenuItem) {
     this.editingItem.set(item);
     this.editName        = item.name;
@@ -65,27 +112,21 @@ export class MenuAdminComponent implements OnInit {
     this.editAvailable   = item.available;
   }
 
-  closeEdit() {
-    this.editingItem.set(null);
-  }
+  closeEdit() { this.editingItem.set(null); }
 
   saveEdit() {
     const item = this.editingItem();
     if (!item) return;
     this.saving.set(true);
-
     const data = {
-      name:        this.editName,
+      name: this.editName,
       description: this.editDescription,
-      price:       this.editPrice,
-      available:   this.editAvailable,
+      price: this.editPrice,
+      available: this.editAvailable,
     };
-
     this.api.updateMenuItem(item._id, data).subscribe({
       next: updated => {
-        this.items.update(list =>
-          list.map(i => i._id === updated._id ? updated : i)
-        );
+        this.items.update(list => list.map(i => i._id === updated._id ? updated : i));
         this.saving.set(false);
         this.closeEdit();
         this.showNotif(`✅ ${updated.name} mis à jour`);
@@ -97,11 +138,26 @@ export class MenuAdminComponent implements OnInit {
     });
   }
 
+  // ── Suppression ──
+  deleteItem(item: MenuItem) {
+    if (!confirm(`Supprimer ${item.emoji} ${item.name} ?`)) return;
+    this.deleting.set(item._id);
+    this.api.deleteMenuItem(item._id).subscribe({
+      next: () => {
+        this.items.update(list => list.filter(i => i._id !== item._id));
+        this.deleting.set('');
+        this.showNotif(`🗑️ ${item.name} supprimé`);
+      },
+      error: () => {
+        this.deleting.set('');
+        this.showNotif('❌ Erreur lors de la suppression');
+      }
+    });
+  }
+
   toggleAvailable(item: MenuItem) {
     this.api.updateMenuItem(item._id, { available: !item.available }).subscribe(updated => {
-      this.items.update(list =>
-        list.map(i => i._id === updated._id ? updated : i)
-      );
+      this.items.update(list => list.map(i => i._id === updated._id ? updated : i));
       const state = updated.available ? 'activé' : 'désactivé';
       this.showNotif(`${updated.emoji} ${updated.name} ${state}`);
     });

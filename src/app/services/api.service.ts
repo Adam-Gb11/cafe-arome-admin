@@ -15,18 +15,29 @@ export class ApiService {
   }
 
   // ── Menu ──────────────────────────────────────────────
-  getAllMenuItems(): Observable<MenuItem[]> {
-    return this.http.get<MenuItem[]>(`${this.apiUrl}/menu`, {
-      headers: this.headers()
-    });
-  }
+getAllMenuItems(): Observable<MenuItem[]> {
+  return this.http.get<MenuItem[]>(`${this.apiUrl}/menu?all=true`, {
+    headers: this.headers()
+  });
+}
 
-  updateMenuItem(id: string, data: Partial<MenuItem>): Observable<MenuItem> {
-    return this.http.patch<MenuItem>(`${this.apiUrl}/menu/${id}`, data, {
-      headers: this.headers()
-    });
-  }
+updateMenuItem(id: string, data: Partial<MenuItem>): Observable<MenuItem> {
+  return this.http.patch<MenuItem>(`${this.apiUrl}/menu/${id}`, data, {
+    headers: this.headers()
+  });
+}
 
+createMenuItem(data: Partial<MenuItem>): Observable<MenuItem> {
+  return this.http.post<MenuItem>(`${this.apiUrl}/menu`, data, {
+    headers: this.headers()
+  });
+}
+
+deleteMenuItem(id: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/menu/${id}`, {
+    headers: this.headers()
+  });
+}
   // ── Orders ────────────────────────────────────────────
   getOrders(status?: string): Observable<Order[]> {
     const url = status

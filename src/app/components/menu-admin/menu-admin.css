@@ -356,6 +356,56 @@
   box-shadow: 0 8px 32px rgba(0,0,0,.5);
   animation: notifIn 0.3s ease;
 }
+/* ── Header right ── */
+.hdr-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── Add button ── */
+.add-btn {
+  background: var(--gold);
+  border: none;
+  color: #0a0c12;
+  padding: 9px 16px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-btn:hover { background: var(--gold-hi); }
+
+/* ── Delete button ── */
+.delete-btn {
+  background: rgba(240,71,111,.08);
+  border: 1px solid rgba(240,71,111,.3);
+  color: var(--red);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover { background: rgba(240,71,111,.16); }
+.delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Two fields ── */
+.two-fields {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+/* ── Select ── */
+select.inp {
+  cursor: pointer;
+}
 
 @keyframes notifIn {
   from { opacity: 0; transform: translateX(10px); }

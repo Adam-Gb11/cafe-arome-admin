@@ -7,12 +7,14 @@
 
   <div class="page-hdr">
     <h2 class="page-title">Gestion du menu</h2>
-    <span class="item-count">{{ items().length }} articles</span>
+    <div class="hdr-right">
+      <span class="item-count">{{ items().length }} articles</span>
+      <button class="add-btn" (click)="openAdd()">➕ Ajouter</button>
+    </div>
   </div>
 
   <!-- Groupes par catégorie -->
   <div *ngFor="let group of groupedItems" class="group">
-
     <div class="group-hdr">
       <h3 class="group-title">{{ group.label }}</h3>
       <div class="group-line"></div>
@@ -23,15 +25,12 @@
            class="mcard"
            [class.unavailable]="!item.available">
 
-        <!-- Emoji + infos -->
         <div class="mc-top">
           <span class="mc-em">{{ item.emoji }}</span>
           <div class="mc-info">
             <div class="mc-name">
               {{ item.name }}
-              <span *ngIf="item.badge"
-                    class="badge"
-                    [class]="'b-' + item.badge">
+              <span *ngIf="item.badge" class="badge" [class]="'b-' + item.badge">
                 {{ badgeLabels[item.badge] }}
               </span>
             </div>
@@ -40,15 +39,17 @@
           <div class="mc-price">{{ item.price.toFixed(2) }} TND</div>
         </div>
 
-        <!-- Actions -->
         <div class="mc-actions">
           <button class="toggle-btn"
                   [class.on]="item.available"
                   (click)="toggleAvailable(item)">
             {{ item.available ? '✅ Disponible' : '⛔ Indisponible' }}
           </button>
-          <button class="edit-btn" (click)="openEdit(item)">
-            ✏️ Modifier
+          <button class="edit-btn" (click)="openEdit(item)">✏️</button>
+          <button class="delete-btn"
+                  [disabled]="deleting() === item._id"
+                  (click)="deleteItem(item)">
+            {{ deleting() === item._id ? '...' : '🗑️' }}
           </button>
         </div>
 
@@ -58,19 +59,91 @@
 
 </div>
 
-<!-- Modal édition -->
-<div *ngIf="editingItem()" class="overlay" (click)="closeEdit()">
+<!-- Modal Ajout -->
+<div *ngIf="showAddForm()" class="overlay" (click)="closeAdd()">
   <div class="modal" (click)="$event.stopPropagation()">
 
     <div class="modal-hdr">
-      <h3 class="modal-title">
-        {{ editingItem()!.emoji }} Modifier l'article
-      </h3>
-      <button class="close-btn" (click)="closeEdit()">✕</button>
+      <h3 class="modal-title">➕ Ajouter un article</h3>
+      <button class="close-btn" (click)="closeAdd()">✕</button>
     </div>
 
     <div class="modal-body">
 
+      <div class="two-fields">
+        <div>
+          <label class="lbl">Emoji</label>
+          <input class="inp" [(ngModel)]="newEmoji" type="text" maxlength="2">
+        </div>
+        <div style="flex:1">
+          <label class="lbl">Nom</label>
+          <input class="inp" [(ngModel)]="newName" type="text" placeholder="Ex: Café Latte">
+        </div>
+      </div>
+
+      <label class="lbl">Description</label>
+      <textarea class="inp textarea" [(ngModel)]="newDescription" rows="2"
+                placeholder="Description courte..."></textarea>
+
+      <div class="two-fields">
+        <div style="flex:1">
+          <label class="lbl">Prix (TND)</label>
+          <input class="inp" [(ngModel)]="newPrice" type="number" step="0.1" min="0">
+        </div>
+        <div style="flex:1">
+          <label class="lbl">Catégorie</label>
+          <select class="inp" [(ngModel)]="newCategory">
+            <option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
+              {{ cat.value }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="two-fields">
+        <div style="flex:1">
+          <label class="lbl">Badge (optionnel)</label>
+          <select class="inp" [(ngModel)]="newBadge">
+            <option value="">Aucun</option>
+            <option value="popular">Populaire</option>
+            <option value="new">Nouveau</option>
+            <option value="chef">Signature</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Disponible</label>
+          <button class="avail-toggle"
+                  [class.on]="newAvailable"
+                  (click)="newAvailable = !newAvailable">
+            {{ newAvailable ? '✅ Oui' : '⛔ Non' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeAdd()">Annuler</button>
+      <button class="save-btn"
+              [disabled]="saving() || !newName || newPrice <= 0"
+              (click)="saveAdd()">
+        {{ saving() ? 'Ajout...' : '➕ Ajouter' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Édition -->
+<div *ngIf="editingItem()" class="overlay" (click)="closeEdit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-hdr">
+      <h3 class="modal-title">{{ editingItem()!.emoji }} Modifier l'article</h3>
+      <button class="close-btn" (click)="closeEdit()">✕</button>
+    </div>
+
+    <div class="modal-body">
       <label class="lbl">Nom</label>
       <input class="inp" [(ngModel)]="editName" type="text">
 
@@ -88,7 +161,6 @@
           {{ editAvailable ? '✅ Oui' : '⛔ Non' }}
         </button>
       </div>
-
     </div>
 
     <div class="modal-footer">
