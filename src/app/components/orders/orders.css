@@ -262,6 +262,71 @@
 .pdf-btn:hover {
   background: rgba(200,169,110,.16);
 }
+/* ── Calls banner ── */
+.calls-banner {
+  background: rgba(240,71,111,0.08);
+  border: 1px solid rgba(240,71,111,0.3);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { border-color: rgba(240,71,111,0.3); }
+  50%       { border-color: rgba(240,71,111,0.8); }
+}
+
+.calls-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f0476f;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.calls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.call-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(240,71,111,0.05);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.call-table {
+  flex: 1;
+  font-size: 13px;
+  color: #dce4f5;
+  font-weight: 500;
+}
+
+.call-time {
+  font-size: 11px;
+  color: #4e5a7a;
+}
+
+.call-answer {
+  background: rgba(61,214,140,0.1);
+  border: 1px solid rgba(61,214,140,0.3);
+  color: #3dd68c;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.call-answer:hover {
+  background: rgba(61,214,140,0.2);
+}
 
 @keyframes notifIn {
   from { opacity: 0; transform: translateX(10px); }

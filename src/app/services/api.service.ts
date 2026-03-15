@@ -70,4 +70,16 @@ getReviewStats(): Observable<any> {
     headers: this.headers()
   });
 }
+// ── Calls ──
+getCalls(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/calls`, {
+    headers: this.headers()
+  });
+}
+
+answerCall(id: string): Observable<any> {
+  return this.http.patch(`${this.apiUrl}/calls/${id}`, {}, {
+    headers: this.headers()
+  });
+}
 }

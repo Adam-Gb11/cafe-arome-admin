@@ -54,23 +54,38 @@ export class OrdersComponent implements OnInit, OnDestroy {
       done:    o.filter(x => x.status === 'delivered').length,
     };
   }
-
+  calls= signal<any[]>([]);
+  private prevCalls = 0;
   private prevCount = 0;
 
   ngOnInit() {
-    this.sub = interval(5000).pipe(
-      startWith(0),
-      switchMap(() => this.api.getOrders()),
-    ).subscribe(orders => {
-      if (orders.length > this.prevCount && this.prevCount > 0) {
-        this.showNotif('Nouvelle commande !');
-        this.playSound();
+  this.sub = interval(5000).pipe(
+    startWith(0),
+    switchMap(() => this.api.getOrders()),
+  ).subscribe(orders => {
+    if (orders.length > this.prevCount && this.prevCount > 0) {
+      this.showNotif('Nouvelle commande !');
+      this.playSound();
+    }
+    this.prevCount = orders.length;
+    this.orders.set(orders);
+    this.loading.set(false);
+  });
+
+  // Polling appels serveur
+  interval(4000).pipe(
+    startWith(0),
+    switchMap(() => this.api.getCalls()),
+  ).subscribe(calls => {
+    if (calls.length > this.prevCalls && this.prevCalls >= 0) {
+      if (calls.length > 0) {
+        this.playCallSound();
       }
-      this.prevCount = orders.length;
-      this.orders.set(orders);
-      this.loading.set(false);
-    });
-  }
+    }
+    this.prevCalls = calls.length;
+    this.calls.set(calls);
+  });
+}
 
   ngOnDestroy() { this.sub?.unsubscribe(); }
 
@@ -142,7 +157,27 @@ export class OrdersComponent implements OnInit, OnDestroy {
     doc.save(`commandes-${date}.pdf`);
     this.showNotif('PDF exporte !');
   }
+  answerCall(call: any) {
+  this.api.answerCall(call._id).subscribe(() => {
+    this.calls.update(list => list.filter(c => c._id !== call._id));
+  });
+}
 
+private playCallSound() {
+  const ctx  = new AudioContext();
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(880, ctx.currentTime);
+  osc.frequency.setValueAtTime(660, ctx.currentTime + 0.15);
+  osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
+  gain.gain.setValueAtTime(0.4, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.5);
+}
   private showNotif(msg: string) {
     this.notification.set(msg);
     setTimeout(() => this.notification.set(''), 3500);

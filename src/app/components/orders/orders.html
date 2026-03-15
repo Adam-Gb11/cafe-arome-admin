@@ -1,4 +1,17 @@
 
+<!-- Appels serveur -->
+<div *ngIf="calls().length > 0" class="calls-banner">
+  <div class="calls-title">🔔 Appels serveur</div>
+  <div class="calls-list">
+    <div *ngFor="let call of calls()" class="call-item">
+      <span class="call-table">📍 Table {{ call.tableNumber }}</span>
+      <span class="call-time">{{ call.createdAt | date:'HH:mm' }}</span>
+      <button class="call-answer" (click)="answerCall(call)">
+        ✓ Répondu
+      </button>
+    </div>
+  </div>
+</div>
 <!-- Stats -->
 <div class="stats-row">
   <div class="stat">
