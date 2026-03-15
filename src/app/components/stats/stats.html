@@ -25,6 +25,21 @@
     </div>
   </div>
 
+  <!-- Graphiques -->
+  <div class="two-col" style="margin-bottom: 14px;">
+
+    <div class="panel">
+      <h3 class="panel-title">📈 Commandes par heure — aujourd'hui</h3>
+      <canvas #hourlyChart></canvas>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">💰 Revenus des 7 derniers jours</h3>
+      <canvas #weeklyChart></canvas>
+    </div>
+
+  </div>
+
   <div class="two-col">
 
     <!-- Top articles -->
@@ -38,9 +53,7 @@
           <div class="t-info">
             <div class="t-name">{{ item.name }}</div>
             <div class="bar-wrap">
-              <div class="bar"
-                   [style.width.%]="(item.qty / maxQty) * 100">
-              </div>
+              <div class="bar" [style.width.%]="(item.qty / maxQty) * 100"></div>
             </div>
           </div>
           <span class="t-qty">{{ item.qty }}×</span>
