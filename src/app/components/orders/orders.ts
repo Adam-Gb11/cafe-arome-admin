@@ -18,6 +18,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private sub!: Subscription;
 
   orders       = signal<Order[]>([]);
+  selectedDate = signal(new Date().toISOString().split('T')[0]);
   filter       = signal('all');
   loading      = signal(true);
   notification = signal('');
@@ -38,12 +39,25 @@ export class OrdersComponent implements OnInit, OnDestroy {
     { id: 'delivered', label: 'Livrées' },
   ];
 
-  get filteredOrders(): Order[] {
-    const f = this.filter();
-    return f === 'all'
-      ? this.orders()
-      : this.orders().filter(o => o.status === f);
+ get filteredOrders(): Order[] {
+  const f    = this.filter();
+  const date = this.selectedDate();
+  let orders = this.orders();
+
+  // Filtre par date
+  if (date) {
+    orders = orders.filter(o =>
+      new Date(o.createdAt).toISOString().split('T')[0] === date
+    );
   }
+
+  // Filtre par statut
+  if (f !== 'all') {
+    orders = orders.filter(o => o.status === f);
+  }
+
+  return orders;
+}
 
   get stats() {
     const o = this.orders();

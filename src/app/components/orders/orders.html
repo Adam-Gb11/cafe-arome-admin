@@ -36,7 +36,12 @@
 <div class="sec-hdr">
   <h2 class="sec-title">Commandes</h2>
   <div class="sec-hdr-right">
-    <button class="pdf-btn" (click)="exportPDF()">🖨️ Export PDF</button>
+    <!-- Filtre date -->
+    <input class="date-input"
+           type="date"
+           [value]="selectedDate()"
+           (change)="selectedDate.set($any($event.target).value)">
+    <button class="pdf-btn" (click)="exportPDF()">Export PDF</button>
     <div class="filters">
       <button *ngFor="let f of filters"
               class="flt"

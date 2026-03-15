@@ -327,7 +327,28 @@
 .call-answer:hover {
   background: rgba(61,214,140,0.2);
 }
+/* ── Date input ── */
+.date-input {
+  background: var(--card, #141820);
+  border: 1px solid var(--edge, #20263a);
+  color: var(--bright, #dce4f5);
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
+.date-input:focus {
+  border-color: var(--gold-lo, #8c6e3f);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
 @keyframes notifIn {
   from { opacity: 0; transform: translateX(10px); }
   to   { opacity: 1; transform: translateX(0); }
