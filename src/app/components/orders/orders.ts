@@ -72,7 +72,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private prevCalls = 0;
   private prevCount = 0;
 
-  ngOnInit() {
+ ngOnInit() {
+  // Reset automatique à minuit
+  const checkMidnight = setInterval(() => {
+    const today = new Date().toISOString().split('T')[0];
+    if (this.selectedDate() !== today) {
+      this.selectedDate.set(today);
+      this.showNotif('Nouveau jour — commandes remises à zéro !');
+    }
+  }, 60000); // vérifie chaque minute
+
   this.sub = interval(5000).pipe(
     startWith(0),
     switchMap(() => this.api.getOrders()),
@@ -85,7 +94,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.orders.set(orders);
     this.loading.set(false);
   });
-
   // Polling appels serveur
   interval(4000).pipe(
     startWith(0),
