@@ -122,21 +122,25 @@
 
     <!-- Footer -->
     <div class="of">
-      <div class="o-tot">{{ order.total.toFixed(2) }} TND</div>
-      <div class="a-btns">
-        <button *ngIf="nextStatus(order)"
-                class="a-btn"
-                [class]="'next-' + order.status"
-                (click)="updateStatus(order, nextStatus(order)!)">
-          {{ nextLabel(order) }}
-        </button>
-        <button *ngIf="order.status === 'pending'"
-                class="a-btn cancel"
-                (click)="updateStatus(order, 'cancelled')">
-          ✕
-        </button>
-      </div>
-    </div>
+  <div class="o-tot">{{ order.total.toFixed(2) }} TND</div>
+  <div class="a-btns">
+    <button *ngIf="nextStatus(order)"
+            class="a-btn"
+            [class]="'next-' + order.status"
+            (click)="updateStatus(order, nextStatus(order)!)">
+      {{ nextLabel(order) }}
+    </button>
+    <button class="a-btn bill-btn"
+            (click)="printBill(order)">
+      🖨️
+    </button>
+    <button *ngIf="order.status === 'pending'"
+            class="a-btn cancel"
+            (click)="updateStatus(order, 'cancelled')">
+      ✕
+    </button>
+  </div>
+</div>
 
   </div>
 </div>

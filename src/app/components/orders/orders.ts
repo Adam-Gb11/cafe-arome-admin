@@ -6,6 +6,7 @@ import { Order } from '../../models/models';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -235,6 +236,51 @@ private buildTableStates() {
 scrollToTable(tableNumber: number) {
   const el = document.getElementById(`table-${tableNumber}`);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+printBill(order: Order) {
+  const doc  = new jsPDF();
+  const date = new Date().toLocaleString('fr-FR');
+
+  // Header
+  doc.setFontSize(20);
+  doc.setTextColor(200, 169, 110);
+  doc.text('CAFE AROME', 105, 20, { align: 'center' });
+
+  doc.setFontSize(11);
+  doc.setTextColor(100);
+  doc.text(`Table ${order.tableNumber} — Addition`, 105, 30, { align: 'center' });
+  doc.text(date, 105, 37, { align: 'center' });
+
+  doc.setLineWidth(0.5);
+  doc.setDrawColor(200, 169, 110);
+  doc.line(14, 42, 196, 42);
+
+  let y = 52;
+
+  order.items.forEach(item => {
+    doc.setFontSize(10);
+    doc.setTextColor(60);
+    doc.text(`${item.name} x${item.quantity}`, 14, y);
+    doc.text(`${item.subtotal.toFixed(2)} TND`, 196, y, { align: 'right' });
+    y += 8;
+  });
+
+  // Total
+  doc.setLineWidth(0.5);
+  doc.line(14, y, 196, y);
+  y += 10;
+
+  doc.setFontSize(14);
+  doc.setTextColor(200, 169, 110);
+  doc.text('TOTAL', 14, y);
+  doc.text(`${order.total.toFixed(2)} TND`, 196, y, { align: 'right' });
+
+  y += 16;
+  doc.setFontSize(10);
+  doc.setTextColor(150);
+  doc.text('Merci de votre visite !', 105, y, { align: 'center' });
+
+  doc.save(`addition-table-${order.tableNumber}.pdf`);
 }
   private showNotif(msg: string) {
     this.notification.set(msg);
