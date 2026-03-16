@@ -7,6 +7,12 @@ export const routes: Routes = [
       import('./components/login/login')
         .then(m => m.LoginComponent),
   },
+  {
+  path: 'cuisine',
+  loadComponent: () =>
+    import('./components/kitchen/kitchen')
+      .then(m => m.KitchenComponent),
+},
   
     {
   path: 'admin',
