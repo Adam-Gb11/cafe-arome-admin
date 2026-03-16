@@ -84,7 +84,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   this.sub = interval(5000).pipe(
     startWith(0),
-    switchMap(() => this.api.getOrders()),
+    switchMap(() => this.api.getOrders(undefined, this.selectedDate())),
   ).subscribe(orders => {
     if (orders.length > this.prevCount && this.prevCount > 0) {
       this.showNotif('Nouvelle commande !');

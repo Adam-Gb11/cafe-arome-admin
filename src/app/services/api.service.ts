@@ -39,13 +39,13 @@ deleteMenuItem(id: string): Observable<any> {
   });
 }
   // ── Orders ────────────────────────────────────────────
-  getOrders(status?: string): Observable<Order[]> {
-    const url = status
-      ? `${this.apiUrl}/orders?status=${status}`
-      : `${this.apiUrl}/orders`;
-    return this.http.get<Order[]>(url, { headers: this.headers() });
-  }
-
+  getOrders(status?: string, date?: string): Observable<Order[]> {
+  let params = '';
+  if (status) params += `status=${status}`;
+  if (date) params += `${params ? '&' : ''}date=${date}`;
+  const url = params ? `${this.apiUrl}/orders?${params}` : `${this.apiUrl}/orders`;
+  return this.http.get<Order[]>(url, { headers: this.headers() });
+}
   updateOrderStatus(id: string, status: string): Observable<Order> {
     return this.http.patch<Order>(
       `${this.apiUrl}/orders/${id}/status`,
