@@ -46,6 +46,12 @@ export const routes: Routes = [
       .then(m => m.CafePlanComponent),
 },
 {
+  path: 'kitchen',
+  loadComponent: () =>
+    import('./components/kitchen/kitchen')
+      .then(m => m.KitchenComponent),
+},
+{
   path: 'reviews',
   loadComponent: () =>
     import('./components/reviews/reviews')

@@ -1,0 +1,78 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!loading()">
+
+  <!-- Header -->
+  <div class="kitchen-hdr">
+    <div class="kitchen-title">👨‍🍳 Cuisine</div>
+    <div class="kitchen-count">
+      {{ orders().length }} commande{{ orders().length > 1 ? 's' : '' }} en attente
+    </div>
+  </div>
+
+  <!-- Aucune commande -->
+  <div *ngIf="orders().length === 0" class="empty">
+    <div class="empty-ico">☕</div>
+    <div class="empty-txt">Aucune commande en attente</div>
+    <div class="empty-sub">En attente de nouvelles commandes...</div>
+  </div>
+
+  <!-- Grille commandes -->
+  <div class="kitchen-grid">
+    <div *ngFor="let order of orders()"
+         class="kcard"
+         [class.k-pending]="order.status === 'pending'"
+         [class.k-preparing]="order.status === 'preparing'">
+
+      <!-- Header -->
+      <div class="kc-hdr">
+        <div class="kc-left">
+          <div class="kc-table">Table {{ order.tableNumber }}</div>
+          <div class="kc-num">{{ order.orderNumber }}</div>
+        </div>
+        <div class="kc-right">
+          <div class="kc-time">{{ order.createdAt | date:'HH:mm' }}</div>
+          <div class="kc-status" [class]="'ks-' + order.status">
+            {{ statusMeta[order.status].label }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Articles -->
+      <ul class="kc-items">
+        <li *ngFor="let item of order.items" class="kc-item">
+          <span class="ki-em">{{ item.emoji }}</span>
+          <span class="ki-name">{{ item.name }}</span>
+          <span class="ki-qty">× {{ item.quantity }}</span>
+        </li>
+      </ul>
+
+      <!-- Note -->
+      <div *ngIf="order.note" class="kc-note">
+        📝 {{ order.note }}
+      </div>
+
+      <!-- Actions -->
+      <div class="kc-actions">
+        <button *ngIf="order.status === 'pending'"
+                class="kc-btn prepare"
+                (click)="updateStatus(order, 'preparing')">
+          🟡 Commencer
+        </button>
+        <button *ngIf="order.status === 'preparing'"
+                class="kc-btn ready"
+                (click)="updateStatus(order, 'delivered')">
+          ✅ Prêt !
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div *ngIf="notification()" class="toast">{{ notification() }}</div>
