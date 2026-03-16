@@ -25,11 +25,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
   notification = signal('');
 
   readonly statusMeta: Record<string, { label: string; icon: string }> = {
-    pending:   { label: 'Nouveau',     icon: '🔴' },
-    preparing: { label: 'Préparation', icon: '🟡' },
-    ready:     { label: 'Prêt',        icon: '🟢' },
-    delivered: { label: 'Livré',       icon: '✅' },
-    cancelled: { label: 'Annulé',      icon: '❌' },
+    pending:   { label: 'Nouveau',          icon: '🔴' },
+    preparing: { label: 'Préparation',      icon: '🟡' },
+    ready:     { label: 'Prêt',             icon: '🟢' },
+    delivered: { label: 'Livré',            icon: '✅' },
+    cancelled: { label: 'Annulé',           icon: '❌' },
+    billed:    { label: 'Addition reçue',   icon: '🧾' },
   };
 
   readonly filters = [
@@ -238,10 +239,18 @@ scrollToTable(tableNumber: number) {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 printBill(order: Order) {
+  // Marquer comme billed
+  this.api.updateOrderStatus(order._id, 'billed').subscribe(updated => {
+    this.orders.update(list =>
+      list.map(o => o._id === updated._id ? updated : o)
+    );
+    this.showNotif(`🧾 Addition Table ${order.tableNumber} imprimée !`);
+  });
+
+  // Générer le PDF
   const doc  = new jsPDF();
   const date = new Date().toLocaleString('fr-FR');
 
-  // Header
   doc.setFontSize(20);
   doc.setTextColor(200, 169, 110);
   doc.text('CAFE AROME', 105, 20, { align: 'center' });
@@ -265,7 +274,6 @@ printBill(order: Order) {
     y += 8;
   });
 
-  // Total
   doc.setLineWidth(0.5);
   doc.line(14, y, 196, y);
   y += 10;
