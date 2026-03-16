@@ -12,6 +12,26 @@
     </div>
   </div>
 </div>
+<!-- Plan du café -->
+<div class="mini-plan">
+  <div class="mini-plan-hdr">
+    <span class="mini-plan-title">Plan du café</span>
+    <div class="legend">
+      <span class="leg-item"><span class="leg-dot free"></span> Libre</span>
+      <span class="leg-item"><span class="leg-dot pending"></span> Nouvelle</span>
+      <span class="leg-item"><span class="leg-dot preparing"></span> Préparation</span>
+      <span class="leg-item"><span class="leg-dot calling"></span> Appel</span>
+    </div>
+  </div>
+  <div class="mini-tables">
+    <div *ngFor="let t of tableStates()"
+         class="mini-table"
+         [class]="'mt-' + t.status"
+         (click)="scrollToTable(t.number)">
+      <span class="mt-num">{{ t.number }}</span>
+    </div>
+  </div>
+</div>
 <!-- Stats -->
 <div class="stats-row">
   <div class="stat">
@@ -68,9 +88,10 @@
     <div>Aucune commande</div>
   </div>
 
-  <div *ngFor="let order of filteredOrders"
-       class="ocard"
-       [class]="'ocard s-' + order.status">
+ <div *ngFor="let order of filteredOrders"
+     class="ocard"
+     [id]="'table-' + order.tableNumber"
+     [class]="'ocard s-' + order.status">
 
     <!-- Header carte -->
     <div class="oh">

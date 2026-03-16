@@ -70,6 +70,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   calls= signal<any[]>([]);
   private prevCalls = 0;
+  tableStates  = signal<any[]>([]);
+private lastOrders: Order[] = [];
   private prevCount = 0;
 
  ngOnInit() {
@@ -92,6 +94,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
     this.prevCount = orders.length;
     this.orders.set(orders);
+    this.lastOrders = orders;
+this.buildTableStates();
     this.loading.set(false);
   });
   // Polling appels serveur
@@ -106,6 +110,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
     this.prevCalls = calls.length;
     this.calls.set(calls);
+    this.buildTableStates();
   });
 }
 
@@ -199,6 +204,37 @@ private playCallSound() {
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
   osc.start(ctx.currentTime);
   osc.stop(ctx.currentTime + 0.5);
+}
+private buildTableStates() {
+  const orders = this.lastOrders;
+  const calls  = this.calls();
+  const today  = new Date().toDateString();
+
+  const todayOrders = orders.filter(o =>
+    new Date(o.createdAt).toDateString() === today &&
+    o.status !== 'delivered' &&
+    o.status !== 'cancelled'
+  );
+
+  const states = Array.from({ length: 20 }, (_, i) => {
+    const num         = i + 1;
+    const tableOrders = todayOrders.filter(o => o.tableNumber === num);
+    const isCalling   = calls.some(c => c.tableNumber === num);
+
+    let status = 'free';
+    if (isCalling)                                              status = 'calling';
+    else if (tableOrders.some(o => o.status === 'pending'))    status = 'pending';
+    else if (tableOrders.some(o => o.status === 'preparing'))  status = 'preparing';
+
+    return { number: num, status };
+  });
+
+  this.tableStates.set(states);
+}
+
+scrollToTable(tableNumber: number) {
+  const el = document.getElementById(`table-${tableNumber}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
   private showNotif(msg: string) {
     this.notification.set(msg);
