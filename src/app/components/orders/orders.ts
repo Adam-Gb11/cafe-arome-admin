@@ -213,10 +213,11 @@ private buildTableStates() {
   const today  = new Date().toDateString();
 
   const todayOrders = orders.filter(o =>
-    new Date(o.createdAt).toDateString() === today &&
-    o.status !== 'delivered' &&
-    o.status !== 'cancelled'
-  );
+  new Date(o.createdAt).toDateString() === today &&
+  o.status !== 'delivered' &&
+  o.status !== 'cancelled' &&
+  o.status !== 'billed'
+);
 
   const states = Array.from({ length: 20 }, (_, i) => {
     const num         = i + 1;

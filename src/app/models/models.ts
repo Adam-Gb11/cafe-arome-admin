@@ -28,7 +28,7 @@ export interface Order {
   items:       OrderItem[];
   total:       number;
   note:        string;
-  status:      'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
+  status:      'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled'| 'billed';
   createdAt:   string;
 }
 
