@@ -40,6 +40,12 @@ export const routes: Routes = [
       .then(m => m.QrCodesComponent),
 },
 {
+  path: 'plan',
+  loadComponent: () =>
+    import('./components/cafe-plan/cafe-plan')
+      .then(m => m.CafePlanComponent),
+},
+{
   path: 'reviews',
   loadComponent: () =>
     import('./components/reviews/reviews')

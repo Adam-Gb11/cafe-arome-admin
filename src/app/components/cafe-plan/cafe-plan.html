@@ -1,0 +1,70 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!loading()">
+
+  <!-- Header -->
+  <div class="page-hdr">
+    <h2 class="page-title">Plan du Café</h2>
+    <div class="legend">
+      <span class="leg-item"><span class="leg-dot free"></span> Libre ({{ stats.free }})</span>
+      <span class="leg-item"><span class="leg-dot pending"></span> Nouvelle ({{ stats.pending }})</span>
+      <span class="leg-item"><span class="leg-dot preparing"></span> Préparation ({{ stats.preparing }})</span>
+      <span class="leg-item"><span class="leg-dot calling"></span> Appel ({{ stats.calling }})</span>
+    </div>
+  </div>
+
+  <!-- Plan -->
+  <div class="cafe-plan">
+    <div *ngFor="let table of tables()"
+         class="table-block"
+         [class]="'t-' + table.status"
+         [class.selected]="selected()?.number === table.number"
+         (click)="selectTable(table)">
+
+      <div class="t-icon">{{ statusIcon[table.status] }}</div>
+      <div class="t-num">{{ table.number }}</div>
+      <div class="t-lbl">{{ statusLabel[table.status] }}</div>
+
+    </div>
+  </div>
+
+  <!-- Détail table sélectionnée -->
+  <div *ngIf="selected()" class="detail-panel">
+
+    <div class="detail-hdr">
+      <h3 class="detail-title">
+        Table {{ selected()!.number }}
+        <span class="detail-status" [class]="'ds-' + selected()!.status">
+          {{ statusLabel[selected()!.status] }}
+        </span>
+      </h3>
+      <button class="close-btn" (click)="closeDetail()">✕</button>
+    </div>
+
+    <!-- Pas de commandes -->
+    <div *ngIf="selected()!.orders.length === 0" class="no-orders">
+      Aucune commande active
+    </div>
+
+    <!-- Commandes -->
+    <div *ngFor="let order of selected()!.orders" class="order-card">
+      <div class="oc-hdr">
+        <span class="oc-num">{{ order.orderNumber }}</span>
+        <span class="oc-time">{{ order.createdAt | date:'HH:mm' }}</span>
+      </div>
+      <ul class="oc-items">
+        <li *ngFor="let item of order.items" class="oc-item">
+          <span>{{ item.emoji }} {{ item.name }}</span>
+          <span>×{{ item.quantity }}</span>
+          <span>{{ item.subtotal.toFixed(2) }} TND</span>
+        </li>
+      </ul>
+      <div class="oc-total">{{ order.total.toFixed(2) }} TND</div>
+    </div>
+
+  </div>
+
+</div>
