@@ -138,6 +138,11 @@
 .ocard.s-preparing { border-left: 3px solid var(--yellow); }
 .ocard.s-ready     { border-left: 3px solid var(--green); }
 .ocard.s-delivered { border-left: 3px solid var(--fog); opacity: 0.65; }
+.ocard.s-billed {
+  border-left: 3px solid #3dd68c;
+  background: rgba(61,214,140,.06);
+  opacity: 0.8;
+}
 .ocard.s-cancelled { border-left: 3px solid #9b7fea; opacity: 0.5; }
 
 /* ── Card header ── */
@@ -167,6 +172,7 @@
 .b-ready     { background: rgba(61,214,140,.14);  color: var(--green); }
 .b-delivered { background: rgba(46,54,80,.5);     color: var(--fog); }
 .b-cancelled { background: rgba(155,127,234,.14); color: #9b7fea; }
+.b-billed { background: rgba(61,214,140,.14); color: var(--green); }
 
 /* ── Articles ── */
 .o-items { list-style: none; padding: 10px 16px; border-bottom: 1px solid var(--edge); }
