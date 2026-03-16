@@ -126,4 +126,11 @@ export class CafePlanComponent implements OnInit, OnDestroy {
       calling:   t.filter(x => x.status === 'calling').length,
     };
   }
+  getStatus(n: number): string {
+    return this.tables().find(t => t.number === n)?.status ?? 'free';
+  }
+
+  getTable(n: number): TableState {
+    return this.tables().find(t => t.number === n) ?? { number: n, status: 'free', orders: [] };
+  }
 }

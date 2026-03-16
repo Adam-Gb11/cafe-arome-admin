@@ -78,66 +78,156 @@
 .leg-dot.preparing { background: var(--amber); }
 .leg-dot.calling   { background: var(--gold); }
 
-/* ── Cafe plan grid ── */
-.cafe-plan {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 12px;
+/* ── Cafe layout ── */
+.cafe-layout {
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  padding: 24px;
   margin-bottom: 24px;
 }
 
-/* ── Table block ── */
-.table-block {
-  background: var(--card);
-  border: 2px solid var(--edge);
+/* ── Zone ── */
+.zone {
+  margin-bottom: 20px;
+}
+
+.zone-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.interior {
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed var(--edge);
   border-radius: 12px;
-  padding: 16px 10px;
+  padding: 16px;
+}
+
+.terrasse {
+  background: rgba(200,169,110,0.03);
+  border: 1px dashed rgba(200,169,110,0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* ── Separator ── */
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.sep-line {
+  flex: 1;
+  height: 1px;
+  background: var(--edge);
+}
+
+.sep-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── Row ── */
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ── Table seat ── */
+.table-seat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   cursor: pointer;
   transition: all 0.2s;
-  user-select: none;
 }
 
-.table-block:hover {
-  transform: translateY(-2px);
-  border-color: var(--muted);
+.table-seat.round {
+  flex-direction: row;
 }
 
-.table-block.selected {
+.table-seat:hover {
+  transform: scale(1.05);
+}
+
+.table-seat.selected .table-body {
   border-color: var(--gold) !important;
-  box-shadow: 0 0 16px rgba(200,169,110,0.2);
+  box-shadow: 0 0 16px rgba(200,169,110,0.3);
 }
 
-/* Status colors */
-.t-free      { border-color: var(--edge); opacity: 0.6; }
-.t-pending   { border-color: var(--red); background: rgba(240,71,111,0.08); }
-.t-preparing { border-color: var(--amber); background: rgba(245,166,35,0.08); }
-.t-calling   { border-color: var(--gold); background: rgba(200,169,110,0.08);
-               animation: tablePulse 1s ease-in-out infinite; }
-
-@keyframes tablePulse {
-  0%, 100% { box-shadow: 0 0 0 rgba(200,169,110,0); }
-  50%       { box-shadow: 0 0 16px rgba(200,169,110,0.4); }
+/* ── Seat ── */
+.seat {
+  width: 12px;
+  height: 20px;
+  background: var(--edge);
+  border-radius: 3px;
+  flex-shrink: 0;
 }
 
-.t-icon { font-size: 20px; line-height: 1; }
+.seat.left, .seat.right {
+  width: 20px;
+  height: 12px;
+}
 
-.t-num {
-  font-size: 22px;
-  font-weight: 400;
+/* ── Table body ── */
+.table-body {
+  width: 70px;
+  height: 50px;
+  background: var(--bg);
+  border: 2px solid var(--edge);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: all 0.2s;
+}
+
+.round .table-body {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.t-number {
+  font-size: 16px;
+  font-weight: 500;
   color: var(--bright);
   line-height: 1;
 }
 
-.t-lbl {
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
+.t-status-icon {
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* ── Status colors ── */
+.t-free .table-body      { border-color: var(--edge); opacity: 0.6; }
+.t-pending .table-body   { border-color: var(--red); background: rgba(240,71,111,0.1); }
+.t-preparing .table-body { border-color: var(--amber); background: rgba(245,166,35,0.1); }
+.t-calling .table-body   { border-color: var(--gold); background: rgba(200,169,110,0.1);
+                            animation: tablePulse 1s ease-in-out infinite; }
+
+.t-pending .seat   { background: rgba(240,71,111,0.3); }
+.t-preparing .seat { background: rgba(245,166,35,0.3); }
+.t-calling .seat   { background: rgba(200,169,110,0.3); }
+
+@keyframes tablePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(200,169,110,0); }
+  50%       { box-shadow: 0 0 16px rgba(200,169,110,0.4); }
 }
 
 /* ── Detail panel ── */
@@ -243,5 +333,4 @@
   font-size: 15px;
   color: var(--gold-hi);
   text-align: right;
-  font-weight: 400;
 }

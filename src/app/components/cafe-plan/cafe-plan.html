@@ -16,24 +16,112 @@
     </div>
   </div>
 
-  <!-- Plan -->
-  <div class="cafe-plan">
-    <div *ngFor="let table of tables()"
-         class="table-block"
-         [class]="'t-' + table.status"
-         [class.selected]="selected()?.number === table.number"
-         (click)="selectTable(table)">
+  <!-- Plan du café -->
+  <div class="cafe-layout">
 
-      <div class="t-icon">{{ statusIcon[table.status] }}</div>
-      <div class="t-num">{{ table.number }}</div>
-      <div class="t-lbl">{{ statusLabel[table.status] }}</div>
+    <!-- Intérieur -->
+    <div class="zone interior">
+      <div class="zone-label">🏠 Intérieur</div>
+
+      <!-- Rangée 1 -->
+      <div class="row">
+        <div *ngFor="let n of [1,2,3,4,5]"
+             class="table-seat"
+             [class]="'t-' + getStatus(n)"
+             [class.selected]="selected()?.number === n"
+             (click)="selectTable(getTable(n))">
+          <div class="seat top"></div>
+          <div class="table-body">
+            <span class="t-number">{{ n }}</span>
+            <span class="t-status-icon">{{ statusIcon[getStatus(n)] }}</span>
+          </div>
+          <div class="seat bottom"></div>
+        </div>
+      </div>
+
+      <!-- Rangée 2 -->
+      <div class="row">
+        <div *ngFor="let n of [6,7,8,9,10]"
+             class="table-seat"
+             [class]="'t-' + getStatus(n)"
+             [class.selected]="selected()?.number === n"
+             (click)="selectTable(getTable(n))">
+          <div class="seat top"></div>
+          <div class="table-body">
+            <span class="t-number">{{ n }}</span>
+            <span class="t-status-icon">{{ statusIcon[getStatus(n)] }}</span>
+          </div>
+          <div class="seat bottom"></div>
+        </div>
+      </div>
+
+      <!-- Rangée 3 (côté L) -->
+      <div class="row">
+        <div *ngFor="let n of [11,12,13]"
+             class="table-seat"
+             [class]="'t-' + getStatus(n)"
+             [class.selected]="selected()?.number === n"
+             (click)="selectTable(getTable(n))">
+          <div class="seat top"></div>
+          <div class="table-body">
+            <span class="t-number">{{ n }}</span>
+            <span class="t-status-icon">{{ statusIcon[getStatus(n)] }}</span>
+          </div>
+          <div class="seat bottom"></div>
+        </div>
+      </div>
 
     </div>
+
+    <!-- Séparateur -->
+    <div class="separator">
+      <div class="sep-line"></div>
+      <span class="sep-label">Entrée</span>
+      <div class="sep-line"></div>
+    </div>
+
+    <!-- Terrasse -->
+    <div class="zone terrasse">
+      <div class="zone-label">☀️ Terrasse</div>
+
+      <!-- Rangée terrasse 1 -->
+      <div class="row">
+        <div *ngFor="let n of [14,15,16,17]"
+             class="table-seat round"
+             [class]="'t-' + getStatus(n)"
+             [class.selected]="selected()?.number === n"
+             (click)="selectTable(getTable(n))">
+          <div class="seat left"></div>
+          <div class="table-body">
+            <span class="t-number">{{ n }}</span>
+            <span class="t-status-icon">{{ statusIcon[getStatus(n)] }}</span>
+          </div>
+          <div class="seat right"></div>
+        </div>
+      </div>
+
+      <!-- Rangée terrasse 2 -->
+      <div class="row">
+        <div *ngFor="let n of [18,19,20]"
+             class="table-seat round"
+             [class]="'t-' + getStatus(n)"
+             [class.selected]="selected()?.number === n"
+             (click)="selectTable(getTable(n))">
+          <div class="seat left"></div>
+          <div class="table-body">
+            <span class="t-number">{{ n }}</span>
+            <span class="t-status-icon">{{ statusIcon[getStatus(n)] }}</span>
+          </div>
+          <div class="seat right"></div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- Détail table sélectionnée -->
   <div *ngIf="selected()" class="detail-panel">
-
     <div class="detail-hdr">
       <h3 class="detail-title">
         Table {{ selected()!.number }}
@@ -44,12 +132,10 @@
       <button class="close-btn" (click)="closeDetail()">✕</button>
     </div>
 
-    <!-- Pas de commandes -->
     <div *ngIf="selected()!.orders.length === 0" class="no-orders">
       Aucune commande active
     </div>
 
-    <!-- Commandes -->
     <div *ngFor="let order of selected()!.orders" class="order-card">
       <div class="oc-hdr">
         <span class="oc-num">{{ order.orderNumber }}</span>
@@ -64,7 +150,6 @@
       </ul>
       <div class="oc-total">{{ order.total.toFixed(2) }} TND</div>
     </div>
-
   </div>
 
 </div>
